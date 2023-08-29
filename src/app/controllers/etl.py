@@ -1,21 +1,11 @@
-from flask import request, jsonify
-
-from app import app, spec, data_base
-
+from flask import jsonify
+from app import app, spec
 from flask_pydantic_spec import (Response, Request)
-#from app.schemas import Post_DTO, Post_list_DTO
-
-
-"""
-Redis use example:
-    r.set('hello', 'world') # True
-
-    value = r.get('hello')
-    print(value) # b'world'
-
-    r.delete('hello') # True
-    print(r.get('hello')) # None
-"""
+from app.services import (
+                          extract_data, 
+                          transform_data, 
+                          get_trasformed_data
+                         )
 
 
 @app.post('/extract')
@@ -24,22 +14,25 @@ def extract():
     """
     - Extract route.
     """
-    pass
+    id_ = extract_data()
+    return jsonify(raw_data_id=str(id_)), 200
 
 
-@app.put('/transform/')
+@app.put('/transform')
 @spec.validate(resp=Response(), tags=["ETL - Pipeline"])
-def transform(id):
-    """
-    - Extract route.
-    """
-    pass
-
-
-@app.get('/get_transformed_data')
-@spec.validate(resp=Response(), tags=["ETL - Pipeline"])
-def get_transformed_data():
+def transform():
     """
     - Transform route.
     """
-    pass
+    id_ = transform_data()
+    return jsonify(transformed_data_id=str(id_)), 200
+
+
+@app.get('/get-transformed-data/<int:id>')
+@spec.validate(resp=Response(), tags=["ETL - Pipeline"])
+def get_transformed_data(id):
+    """
+    - Get transformed data route.
+    """
+    transformed_data = get_trasformed_data(id)
+    return jsonify(data=transformed_data), 200

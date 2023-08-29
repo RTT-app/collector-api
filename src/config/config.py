@@ -19,10 +19,3 @@ SECRET_TOKEN = os.getenv('SECRET_TOKEN')
 USER_AGENT = os.getenv('USER_AGENT')
 SUBREDDIT = os.getenv('SUBREDDIT')
 N_POSTS = os.getenv('N_POSTS')
-
-# DB api config vars
-#API_IP = os.getenv('API_IP')
-#API_PORT = os.getenv('API_PORT')
-
-# DB api endpoints
-# REGISTER_POST = f'http://{API_IP}:{API_PORT}/add-post'
