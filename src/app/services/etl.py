@@ -6,7 +6,10 @@ from config import (CLIENT_ID,
                     USER_AGENT, 
                     SUBREDDIT, 
                     N_POSTS)
-
+from app.utils import (
+                       clean_text, 
+                       stemm_comments
+                       )
 """
 Redis use example:
     r.set('hello', 'world') # True
@@ -27,7 +30,7 @@ def extract_data():
     
     subreddit = client.subreddit(SUBREDDIT)
 
-    top_posts = subreddit.new(limit=N_POSTS) # jogar isso pra dentro do while
+    top_posts = subreddit.new(limit=N_POSTS)
 
     data = {
             "title":[],
@@ -46,14 +49,33 @@ def extract_data():
     id_ = uuid.uuid4()
 
     if data_base.get(id_):
-        raise Exception('Error on commit data.')
+        raise Exception('Error to commit data.')
     
     data_base.set(id_, data)
 
     return id_
 
-def transform_data():
-    pass
 
-def get_trasformed_data():
-    pass
+def transform_data(id_):
+    data = data_base.get(id_)
+
+    data["self_text"] = clean_text(data["self_text"])
+    data["self_text"] = stemm_comments(data["self_text"])
+
+    data["comment"] = clean_text(data["comment"])
+    data["comment"] = stemm_comments(data["comment"])
+
+    id_ = uuid.uuid4()
+
+    if data_base.get(id_):
+        raise Exception('Error to commit transformed data.')
+    
+    data_base.set(id_, data)
+
+    return id_
+
+
+def get_trasformed_data(id_):
+    data = data_base.get(id_)
+
+    return data
