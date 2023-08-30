@@ -1,5 +1,6 @@
 import praw
 import uuid
+import json
 from app import data_base
 from config import (CLIENT_ID, 
                     SECRET_TOKEN, 
@@ -40,18 +41,19 @@ def extract_data():
             }
 
     for post in top_posts:
-            for comment in post.comments:
-                    data["title"].append(post.title)
-                    data["self_text"].append(post.selftext)
-                    data["comment"].append(comment.body)
-                    data["score"].append(comment.score)
+        for comment in post.comments:
+            data["title"].append(post.title)
+            data["self_text"].append(post.selftext)
+            data["comment"].append(comment.body)
+            data["score"].append(comment.score)
     
-    id_ = uuid.uuid4()
+    id_ = str(uuid.uuid4())
 
     if data_base.get(id_):
         raise Exception('Error to commit data.')
     
-    data_base.set(id_, data)
+    json_data = json.dumps(data)
+    data_base.set(id_, json_data)
 
     return id_
 
@@ -77,5 +79,7 @@ def transform_data(id_):
 
 def get_trasformed_data(id_):
     data = data_base.get(id_)
+    print(data)
+    print(type(data))
 
     return data

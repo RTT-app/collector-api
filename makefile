@@ -32,4 +32,5 @@ clean: docker-down
 	find . -type d -name ".pytest_cache" -exec rm -rf '{}' +
 	find . -type d -name "*.egg-info" -exec rm -rf '{}' +
 	rm -rf $(VENV) .pybuilder
+	rm poetry.lock
 	@echo "\033[31mNow, run the \`exit\` command to close the shell session created by poetry!\033[0m"
