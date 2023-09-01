@@ -5,4 +5,5 @@ from .config import (
         SUBREDDIT,
         REDIS_PORT,
         REDIS_HOST,
+        N_POSTS
     )
