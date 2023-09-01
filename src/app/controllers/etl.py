@@ -35,7 +35,7 @@ def transform():
 
 
 @app.get('/get-transformed-data/<string:id>')
-@spec.validate(resp=Response(), tags=["ETL - Pipeline"]) # HTTP_200=GetDataDTO
+@spec.validate(resp=Response(), tags=["ETL - Pipeline"])
 def get_transformed_data(id):
     """
     - Get transformed data route.
