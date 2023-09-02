@@ -1,7 +1,7 @@
 import praw
-import uuid
 import json
 from app import data_base
+from datetime import datetime
 from config import (CLIENT_ID, 
                     SECRET_TOKEN, 
                     USER_AGENT, 
@@ -9,7 +9,8 @@ from config import (CLIENT_ID,
                     N_POSTS)
 from app.utils import (
                        clean_text, 
-                       stemm_comments
+                       stemm_comments,
+                       remove_emojis
                        )
 
 def extract_data():
@@ -36,8 +37,9 @@ def extract_data():
             data["self_text"].append(post.selftext)
             data["comment"].append(comment.body)
             data["score"].append(comment.score)
-    
-    id_ = str(uuid.uuid4())
+
+    current_datetime = datetime.now()
+    id_ = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
     if data_base.get(id_):
         raise Exception('Error to commit data.')
@@ -54,22 +56,10 @@ def transform_data(id_):
 
     json_data["self_text"] = [clean_text(title) for title in json_data["self_text"]]
     json_data["self_text"] = [stemm_comments(title) for title in json_data["self_text"]]
+    json_data["self_text"] = [remove_emojis(comment) for comment in json_data["self_text"]]
 
     json_data["comment"] = [clean_text(comment) for comment in json_data["comment"]]
     json_data["comment"] = [stemm_comments(comment) for comment in json_data["comment"]]
-
-    id_ = str(uuid.uuid4())
-
-    if data_base.get(id_):
-        raise Exception('Error to commit transformed data.')
+    json_data["comment"] = [remove_emojis(comment) for comment in json_data["comment"]]
     
-    json_data = str(json_data)
-    data_base.set(id_, json_data)
-
-    return id_
-
-
-def get_trasformed_data(id_):
-    data = data_base.get(id_)
-
-    return data
+    return json_data
