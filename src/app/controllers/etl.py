@@ -9,7 +9,6 @@ from app.schemas import (
 from app.services import (
                           extract_data, 
                           transform_data, 
-                          get_trasformed_data
                          )
 
 
@@ -24,21 +23,12 @@ def extract():
 
 
 @app.put('/transform')
-@spec.validate(body=Request(TransformDTO),resp=Response(HTTP_200=TransformDTO), tags=["ETL - Pipeline"])
+@spec.validate(body=Request(TransformDTO),resp=Response(), tags=["ETL - Pipeline"])
 def transform():
     """
     - Transform route.
     """
     id = request.json.get('id')
-    id_ = transform_data(id)
-    return jsonify(id=str(id_)), 200
-
-
-@app.get('/get-transformed-data/<string:id>')
-@spec.validate(resp=Response(), tags=["ETL - Pipeline"])
-def get_transformed_data(id):
-    """
-    - Get transformed data route.
-    """
-    transformed_data = get_trasformed_data(id)
-    return jsonify(data=transformed_data), 200
+    transformed_data = transform_data(id)
+    
+    return jsonify(posts=transformed_data), 200
