@@ -2,12 +2,12 @@ VENV?=.venv
 PYTHON?=$(VENV)/bin/python3
 PIP?=$(PYTHON) -m pip
 
-run:
-	#@echo "\33[0;32m collector API is Running!\033[0;32m"
-	$(PYTHON) src/main.py
+run: docker-up
+	@echo "\33[0;32m collector API is Running!\033[0;32m"
 
 docker-up:
-	docker run -d -p 6379:6379 --name redis-server redis 
+	@docker build -t collector-api .
+	@docker-compose up -d
 
 install-poetry: docker-up
 	@if ! command -v poetry &>/dev/null; then \
@@ -23,7 +23,10 @@ venv: install-poetry
 	@poetry shell
 
 docker-down:
-	@docker rm -f redis-server
+	@docker stop collector-api-ctnr redis-db-collector
+	@docker rm -f collector-api-ctnr redis-db-collector
+	@docker rmi redis:latest collector-api:latest
+	@echo 'docker-down'
 
 clean: docker-down
 	@echo "removing recursively: *.py[cod]"
