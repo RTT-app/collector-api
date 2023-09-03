@@ -22,13 +22,12 @@ def extract():
     return jsonify(id=str(id_)), 200
 
 
-@app.put('/transform')
-@spec.validate(body=Request(TransformDTO),resp=Response(), tags=["ETL - Pipeline"])
-def transform():
+@app.get('/transform/<string:id>')
+@spec.validate(resp=Response(), tags=["ETL - Pipeline"])
+def transform(id):
     """
     - Transform route.
     """
-    id = request.json.get('id')
     transformed_data = transform_data(id)
     
     return jsonify(posts=transformed_data), 200
