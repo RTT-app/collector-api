@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-db-collector
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    
+    networks:
+      collector-network:
+        ipv4_address: 172.20.0.6
+  
+  collector-api:
+    image: collector-api:latest
+    container_name: collector-api-ctnr
+    restart: always
+    ports:
+      - "5000:5000"
+    networks:
+      collector-network:
+        ipv4_address: 172.20.0.7
+
+networks:
+  collector-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  redis_data:
