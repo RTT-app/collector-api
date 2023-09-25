@@ -10,7 +10,8 @@ from config import (CLIENT_ID,
 from app.utils import (
                        clean_text, 
                        stemm_comments,
-                       remove_emojis
+                       remove_emojis,
+                       remove_stopwords
                        )
 
 def extract_data():
@@ -56,10 +57,11 @@ def transform_data(id_):
 
     json_data["self_text"] = [clean_text(title) for title in json_data["self_text"]]
     json_data["self_text"] = [stemm_comments(title) for title in json_data["self_text"]]
-    json_data["self_text"] = [remove_emojis(comment) for comment in json_data["self_text"]]
+    json_data["self_text"] = [remove_emojis(title) for title in json_data["self_text"]]
 
     json_data["comment"] = [clean_text(comment) for comment in json_data["comment"]]
     json_data["comment"] = [stemm_comments(comment) for comment in json_data["comment"]]
     json_data["comment"] = [remove_emojis(comment) for comment in json_data["comment"]]
+    json_data["comment"] = [remove_stopwords(comment) for comment in json_data["comment"]]
     
     return json_data

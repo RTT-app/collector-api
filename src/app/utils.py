@@ -7,6 +7,18 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
+def remove_stopwords(words):
+    words = words.split()
+    words_ = []
+    
+    for word in words:
+        if word not in stop_words:
+            words_.append(word)    
+
+    final_set = ' '.join(words_)
+
+    return final_set
+
 
 def clean_text(comment):
     comment_ = re.sub('http[s]?://\S+', ' ',comment)
