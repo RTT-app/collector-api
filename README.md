@@ -46,7 +46,9 @@ N_POSTS -------> The number of most recent messages, used to extract data.
     ```bash
     $ make run
     ```
-### Stop project app
+
+Te swagger doc will be available at [localhost:5000/apidoc/swagger](http://localhost:5000/apidoc/swagger).
+You can access the API endpoints for data extraction and transformation.
 
 Run the command below to clear all the files in the docker container from the application modules environment.
 
@@ -54,3 +56,12 @@ Run the command below to clear all the files in the docker container from the ap
     ```bash
     $ make clean
     ```
+### API Endpoints
+- /extract: Extract text data from Reddit.
+
+- /transform: Transform the extracted data using NLTK for various text processing tasks.
+
+### Usage
+- Use the API endpoints ```/extract``` and ```/transform``` to retrieve and transform Reddit data as needed for your application.
+
+- Customize the extraction and transformation logic in the Python files located in the ```app/services``` directory.
