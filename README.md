@@ -4,7 +4,7 @@ This REST API provides two functions to extract and transform text data from Red
 
 ## Features
 
-- **Data Extraction:** Retrieve text data from Reddit using Praw lib client for python.
+- **Data Extraction:** Retrieve text data from Reddit using Praw lib client for Python.
 
 - **Data Transformation:** Transform the extracted text data using NLTK for tasks such as text cleaning, tokenization, and more.
 
@@ -42,12 +42,12 @@ N_POSTS -------> The number of most recent messages, used to extract data.
    $ cd reddit-data-api
    ```
 
-2. To run the aplication as container, you should run the following command:
+2. To run the application as a container, you should run the following command:
     ```bash
     $ make run
     ```
 
-Te swagger doc will be available at [localhost:5000/apidoc/swagger](http://localhost:5000/apidoc/swagger).
+The swagger doc will be available at [localhost:5000/apidoc/swagger](http://localhost:5000/apidoc/swagger).
 You can access the API endpoints for data extraction and transformation.
 
 Run the command below to clear all the files in the docker container from the application modules environment.
@@ -57,11 +57,11 @@ Run the command below to clear all the files in the docker container from the ap
     $ make clean
     ```
 ### API Endpoints
-- /extract: Extract text data from Reddit.
+- ```/extract```: Extract text data from Reddit.
 
-- /transform: Transform the extracted data using NLTK for various text processing tasks.
+- ```/transform/<string:id>```: Transform the extracted data using NLTK for various text processing tasks.
 
 ### Usage
-- Use the API endpoints ```/extract``` and ```/transform``` to retrieve and transform Reddit data as needed for your application.
+- Use the API endpoints ```/extract``` and ```/transform/<string:id>``` to retrieve and transform Reddit data as needed for your application.
 
 - Customize the extraction and transformation logic in the Python files located in the ```app/services``` directory.
